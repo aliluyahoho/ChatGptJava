@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.aop;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -19,12 +20,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Aspect
 @Component
 public class WebLogAspect {
-    final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
-
-    @Pointcut("execution(* com.nnuo.hunt.controller..*(..))")
+    @Pointcut("execution(* com.tencent.wxcloudrun.controller..*(..))")
     public void controllerLog() {
     }
 
@@ -43,9 +43,9 @@ public class WebLogAspect {
                 .filter(a -> !(a instanceof HttpServletResponse))
                 .collect(Collectors.toList());
         try {
-            logger.info("method:{}, uri:{}, ip:{}, params:{}, arguments:{}", method, uri, ip, params, JSON.toJSONString(arguments));
+            log.info("method:{}, uri:{}, ip:{}, params:{}, arguments:{}", method, uri, ip, params, JSON.toJSONString(arguments));
         } catch (Exception e) {
-            logger.info("method:{}, uri:{}, ip:{}, params:{}", method, uri, ip, params);
+            log.info("method:{}, uri:{}, ip:{}, params:{}", method, uri, ip, params);
         }
     }
 
