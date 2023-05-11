@@ -19,7 +19,7 @@ RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 FROM centos:7
 
 # 安装代理
-RUN yum install wget
+RUN yum install wget -y
 RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
 RUN unzip clash.zip && cd clash
 RUN wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
