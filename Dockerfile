@@ -16,6 +16,7 @@ COPY settings.xml pom.xml /app/
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 
 # 安装代理
+RUN apt install wget
 RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
 RUN unzip clash.zip && cd clash
 RUN wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
