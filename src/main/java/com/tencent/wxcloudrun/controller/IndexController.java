@@ -1,6 +1,5 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.tencent.wxcloudrun.dto.CounterRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,8 @@ public class IndexController {
     }
 
 
-    @PostMapping(value = "/chat")
+    @ResponseBody
+    @PostMapping("/chat")
     public String chat(@RequestBody String question) {
         return question;
     }
