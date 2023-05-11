@@ -20,7 +20,6 @@ curl https://glados.rocks/tools/clash-linux.zip -o clash.zip
 unzip clash.zip && cd clash
 curl https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml > glados.yaml
 chmod +x ./clash-linux-amd64-v1.10.0
-./clash-linux-amd64-v1.10.0 -f glados.yaml -d .
 
 # 选择运行时基础镜像
 FROM alpine:3.13
@@ -36,6 +35,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 
 # 使用 HTTPS 协议访问容器云调用证书安装
 RUN apk add ca-certificates
+
+RUN /app/clash/clash-linux-amd64-v1.10.0 -f /app/clash/glados.yaml -d .
 
 # 指定运行时的工作目录
 WORKDIR /app
