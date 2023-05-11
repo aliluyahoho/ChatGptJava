@@ -3,6 +3,8 @@ package com.tencent.wxcloudrun.aop;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -16,8 +18,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,6 +50,27 @@ public class WebLogAspect {
             log.info("method:{}, uri:{}, ip:{}, params:{}, arguments:{}", method, uri, ip, params, JSON.toJSONString(arguments));
         } catch (Exception e) {
             log.info("method:{}, uri:{}, ip:{}, params:{}", method, uri, ip, params);
+        }
+    }
+
+    @Around("controllerLog()")
+    public Object doAround(ProceedingJoinPoint proceeding) throws Throwable {
+        //执行被拦截的方法 result是返回结果
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        HttpServletRequest request = sra.getRequest();
+        try {
+            Object result = proceeding.proceed();
+            log.info("uri:{}, result:{}", request.getRequestURI(), JSON.toJSONString(result));
+            return result;
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            if (e instanceof InvocationTargetException) {
+                Throwable t = ((InvocationTargetException) e).getTargetException();
+                msg = t.getMessage();
+            }
+            log.info("process error uri:{}, msg:{}", request.getRequestURI(), msg);
+            throw e;
         }
     }
 

@@ -7,6 +7,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AutoReplyService {
 
@@ -15,13 +18,13 @@ public class AutoReplyService {
 
     public static final String send_msg_api = "https://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=wxb73a97e6793331b4";
 
-    public void sendMsg(JSONObject request) throws Exception {
+    public String sendMsg(Map header, JSONObject request) throws Exception {
         JSONObject response = new JSONObject();
         response.put("ToUserName", request.get("FromUserName"));
         response.put("FromUserName", request.get("ToUserName"));
         response.put("CreateTime", System.currentTimeMillis() / 1000);
         response.put("MsgType", request.get("MsgType"));
         response.put("Content", request.get("Content"));
-        httpClient.doPostJson(send_msg_api, JSON.toJSONString(response));
+        return httpClient.doPostJson(send_msg_api, JSON.toJSONString(response), header);
     }
 }

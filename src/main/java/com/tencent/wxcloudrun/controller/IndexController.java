@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * index控制器
@@ -37,8 +41,15 @@ public class IndexController {
 
     @ResponseBody
     @PostMapping("/chat")
-    public void chat(@RequestBody JSONObject request) throws Exception {
-        autoReplyService.sendMsg(request);
+    public String chat(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
+        Map header = new HashMap(1);
+        Enumeration<String> headerNames = servletRequest.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = servletRequest.getHeader(headerName);
+            header.put(headerName, headerValue);
+        }
+        return autoReplyService.sendMsg(header, request);
     }
 
 }
