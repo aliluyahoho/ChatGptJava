@@ -22,6 +22,6 @@ public class AutoReplyService {
         response.put("CreateTime", System.currentTimeMillis());
         response.put("MsgType", request.get("MsgType"));
         response.put("Content", request.get("Content"));
-        httpClient.doPostJson(send_msg_api, JSON.toJSONString(request));
+        httpClient.doPostJson(send_msg_api, JSON.toJSONString(response));
     }
 }
