@@ -19,7 +19,7 @@ public class AutoReplyService {
         JSONObject response = new JSONObject();
         response.put("ToUserName", request.get("FromUserName"));
         response.put("FromUserName", request.get("ToUserName"));
-        response.put("CreateTime", System.currentTimeMillis());
+        response.put("CreateTime", System.currentTimeMillis() / 1000);
         response.put("MsgType", request.get("MsgType"));
         response.put("Content", request.get("Content"));
         httpClient.doPostJson(send_msg_api, JSON.toJSONString(response));
