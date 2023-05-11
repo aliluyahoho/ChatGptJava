@@ -15,15 +15,15 @@ COPY settings.xml pom.xml /app/
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 
+# 选择运行时基础镜像
+FROM centos:7
+
 # 安装代理
 RUN apt-get update && apt-get install -y wget
 RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
 RUN unzip clash.zip && cd clash
 RUN wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
 RUN chmod +x ./clash-linux-amd64-v1.10.0
-
-# 选择运行时基础镜像
-FROM centos:7
 
 # 安装依赖包，如需其他依赖包，请到alpine依赖包管理(https://pkgs.alpinelinux.org/packages?name=php8*imagick*&branch=v3.13)查找。
 # 选用国内镜像源以提高下载速度
