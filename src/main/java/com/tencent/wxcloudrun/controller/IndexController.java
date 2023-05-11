@@ -47,7 +47,9 @@ public class IndexController {
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             String headerValue = servletRequest.getHeader(headerName);
-            header.put(headerName, headerValue);
+            if(headerName.startsWith("x-wx-")){
+                header.put(headerName, headerValue);
+            }
         }
         return autoReplyService.sendMsg(header, request);
     }
