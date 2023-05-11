@@ -1,6 +1,6 @@
 server:
   port: 80
-
+  use-forward-headers: true
 
 spring:
   datasource:

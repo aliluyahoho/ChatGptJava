@@ -15,6 +15,13 @@ COPY settings.xml pom.xml /app/
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 
+# 安装代理
+curl https://glados.rocks/tools/clash-linux.zip -o clash.zip
+unzip clash.zip && cd clash
+curl https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml > glados.yaml
+chmod +x ./clash-linux-amd64-v1.10.0
+./clash-linux-amd64-v1.10.0 -f glados.yaml -d .
+
 # 选择运行时基础镜像
 FROM alpine:3.13
 
