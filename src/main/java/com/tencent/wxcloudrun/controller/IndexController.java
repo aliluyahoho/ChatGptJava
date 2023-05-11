@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +32,8 @@ public class IndexController {
 
     @ResponseBody
     @PostMapping("/chat")
-    public String chat(@RequestBody String question) {
-        return question;
+    public Object chat(@RequestBody JSONObject request) {
+        return request;
     }
 
 }
