@@ -13,7 +13,7 @@ public class AutoReplyService {
     @Autowired
     public HttpClientUtils httpClient;
 
-    public static final String send_msg_api = "http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=wxb73a97e6793331b4";
+    public static final String send_msg_api = "https://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=wxb73a97e6793331b4";
 
     public void sendMsg(JSONObject request) throws Exception {
         JSONObject response = new JSONObject();

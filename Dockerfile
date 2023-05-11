@@ -37,9 +37,9 @@ RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
 RUN unzip clash.zip
 RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
 RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
-
-RUN ./clash/clash-linux-amd64-v1.10.0 -f ./clash/glados.yaml -d .
-RUN export http_proxy="127.0.0.1:7890"
+# 设置代理 （执行不成功）
+# RUN ./clash/clash-linux-amd64-v1.10.0 -f ./clash/glados.yaml -d .
+# RUN export http_proxy="127.0.0.1:7890"
 
 # 指定运行时的工作目录
 WORKDIR /app
