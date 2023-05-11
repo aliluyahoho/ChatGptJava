@@ -16,9 +16,9 @@ COPY settings.xml pom.xml /app/
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 
 # 安装代理
-curl https://glados.rocks/tools/clash-linux.zip -o clash.zip
+wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
 unzip clash.zip && cd clash
-curl https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml > glados.yaml
+wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
 chmod +x ./clash-linux-amd64-v1.10.0
 
 # 选择运行时基础镜像
