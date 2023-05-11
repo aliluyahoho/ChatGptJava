@@ -16,10 +16,10 @@ COPY settings.xml pom.xml /app/
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 
 # 安装代理
-wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
-unzip clash.zip && cd clash
-wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
-chmod +x ./clash-linux-amd64-v1.10.0
+RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
+RUN unzip clash.zip && cd clash
+RUN wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
+RUN chmod +x ./clash-linux-amd64-v1.10.0
 
 # 选择运行时基础镜像
 FROM alpine:3.13
