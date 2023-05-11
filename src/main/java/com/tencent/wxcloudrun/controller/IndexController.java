@@ -1,9 +1,8 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.dto.CounterRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -28,6 +27,12 @@ public class IndexController {
     @GetMapping("/MP_verify_P97WLFQjVODXzc3j.txt")
     public String getData() throws IOException {
         return "P97WLFQjVODXzc3j";
+    }
+
+
+    @PostMapping(value = "/chat")
+    public String chat(@RequestBody String question) {
+        return question;
     }
 
 }
