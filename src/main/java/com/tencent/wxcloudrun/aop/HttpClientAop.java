@@ -1,18 +1,26 @@
 package com.tencent.wxcloudrun.aop;
 
+import com.alibaba.fastjson.JSON;
 import javassist.*;
 import javassist.bytecode.CodeAttribute;
 import javassist.bytecode.LocalVariableAttribute;
 import javassist.bytecode.MethodInfo;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +41,27 @@ public class HttpClientAop {
     public void before(JoinPoint joinPoint) throws Throwable {
         if(isPrintReferenceCall){
             this.printMethodParams(joinPoint);
+        }
+    }
+
+    @Around("doOperation()")
+    public Object doAround(ProceedingJoinPoint proceeding) throws Throwable {
+        //执行被拦截的方法 result是返回结果
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        HttpServletRequest request = sra.getRequest();
+        try {
+            Object result = proceeding.proceed();
+            logger.info("uri:{}, result:{}", request.getRequestURI(), JSON.toJSONString(result));
+            return result;
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            if (e instanceof InvocationTargetException) {
+                Throwable t = ((InvocationTargetException) e).getTargetException();
+                msg = t.getMessage();
+            }
+            logger.info("process error uri:{}, msg:{}", request.getRequestURI(), msg);
+            throw e;
         }
     }
 
