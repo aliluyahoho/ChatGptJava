@@ -21,10 +21,10 @@ FROM centos:7
 # 安装代理
 RUN yum install wget -y
 RUN yum install unzip -y
-RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
-RUN unzip clash.zip && cd clash
-RUN wget -O glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
-RUN chmod +x ./clash-linux-amd64-v1.10.0
+RUN wget -O /app/clash.zip https://glados.rocks/tools/clash-linux.zip
+RUN unzip /app/clash.zip
+RUN wget -O /app/clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
+RUN chmod +x /app/clash/clash-linux-amd64-v1.10.0
 
 # 安装依赖包，如需其他依赖包，请到alpine依赖包管理(https://pkgs.alpinelinux.org/packages?name=php8*imagick*&branch=v3.13)查找。
 # 选用国内镜像源以提高下载速度
