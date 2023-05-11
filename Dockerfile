@@ -38,6 +38,8 @@ RUN apk add ca-certificates
 
 RUN /app/clash/clash-linux-amd64-v1.10.0 -f /app/clash/glados.yaml -d .
 
+RUN export http_proxy="127.0.0.1:7890"
+
 # 指定运行时的工作目录
 WORKDIR /app
 
