@@ -6,6 +6,7 @@ import com.tencent.wxcloudrun.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,6 +21,9 @@ public class AutoReplyService {
 
     @Autowired
     public HttpClientUtils httpClient;
+
+    @Value("${chat_open_api_key}")
+    protected String chat_open_api_key;
 
 
     public static final String send_msg_api = "http://api.weixin.qq.com/cgi-bin/message/custom/send";
@@ -41,7 +45,7 @@ public class AutoReplyService {
     private String callCharGpt(String content) throws Exception {
         Map<String, String> header = new HashMap<>(2);
         header.put("Content-Type", "application/json");
-        header.put("Authorization", "Bearer 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");
+        header.put("Authorization", "Bearer " + chat_open_api_key);
         String msgBody = String.format(getMsgTemlate("json/chatGptTeml.json"), content);
 
         return httpClient.doPostJson(gpt_api, msgBody, header);
