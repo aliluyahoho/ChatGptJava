@@ -1,4 +1,5 @@
 # 安装代理
+#!/bin/sh
 apk add wget --no-cache --no-progress
 apk add unzip --no-cache --no-progress
 wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
