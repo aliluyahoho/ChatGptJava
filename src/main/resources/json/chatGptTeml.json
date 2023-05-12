@@ -1,0 +1,5 @@
+{
+  "model": "text-davinci-003",
+  "prompt": "%s 请详细说明",
+  "temperature": 0
+}

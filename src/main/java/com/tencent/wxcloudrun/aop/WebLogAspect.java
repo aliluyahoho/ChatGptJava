@@ -19,8 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -79,6 +78,32 @@ public class WebLogAspect {
             return request.getRemoteAddr();
         }
         return request.getHeader("x-forwarded-for");
+    }
+
+    private Map<String, Object> getRequestHeaders(HttpServletRequest servletRequest){
+        Map header = new HashMap(1);
+        Enumeration<String> headerNames = servletRequest.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = servletRequest.getHeader(headerName);
+            if(headerName.startsWith("x-")){
+                header.put(headerName, headerValue);
+            }
+        }
+        return header;
+    }
+
+    private Map<String, Object> getResponseHeaders(HttpServletRequest servletRequest){
+        Map header = new HashMap(1);
+        Enumeration<String> headerNames = servletRequest.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = servletRequest.getHeader(headerName);
+            if(headerName.startsWith("x-")){
+                header.put(headerName, headerValue);
+            }
+        }
+        return header;
     }
 
 }
