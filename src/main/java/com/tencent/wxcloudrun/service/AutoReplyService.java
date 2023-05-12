@@ -17,6 +17,8 @@ public class AutoReplyService {
     public HttpClientUtils httpClient;
 
     public static final String send_msg_api = "https://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=wxb73a97e6793331b4";
+    
+    public static final String gpt_api = "https://api.openai.com/v1/chat/completions";
 
     public String sendMsg(Map header, JSONObject request) throws Exception {
         JSONObject response = new JSONObject();
@@ -25,6 +27,6 @@ public class AutoReplyService {
         response.put("CreateTime", System.currentTimeMillis() / 1000);
         response.put("MsgType", request.get("MsgType"));
         response.put("Content", request.get("Content"));
-        return httpClient.doPostJson(send_msg_api, JSON.toJSONString(response), header);
+        return httpClient.doPostJson(gpt_api, JSON.toJSONString(response), header);
     }
 }
