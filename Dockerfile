@@ -20,6 +20,9 @@ RUN chmod +x /app/start.sh
 # 选择运行时基础镜像
 FROM alpine:3.13
 
+# 指定运行时的工作目录
+WORKDIR /app
+
 # 安装依赖包，如需其他依赖包，请到alpine依赖包管理(https://pkgs.alpinelinux.org/packages?name=php8*imagick*&branch=v3.13)查找。
 # 选用国内镜像源以提高下载速度
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
@@ -33,18 +36,15 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 RUN apk add ca-certificates
 
 # 安装代理
-#RUN apk add wget --no-cache --no-progress
-#RUN apk add unzip --no-cache --no-progress
-#RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
-#RUN unzip clash.zip
-#RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
-#RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
+RUN apk add wget --no-cache --no-progress
+RUN apk add unzip --no-cache --no-progress
+RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
+RUN unzip clash.zip
+RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
+RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
 # 设置代理 （执行不成功）
 # RUN nohup  ./clash-linux-amd64-v1.10.0 -f glados.yaml -d . > /dev/null 2>&1 &
 # RUN export http_proxy="127.0.0.1:7890"
-
-# 指定运行时的工作目录
-WORKDIR /app
 
 # 将构建产物jar包拷贝到运行时目录中
 COPY --from=build /app/target/*.jar .
