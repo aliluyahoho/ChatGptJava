@@ -31,15 +31,15 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 RUN apk add ca-certificates
 
 # 安装代理
-# RUN apk add wget --no-cache --no-progress
-# RUN apk add unzip --no-cache --no-progress
-# RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
-# RUN unzip clash.zip
-# RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
-# RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
+RUN apk add wget --no-cache --no-progress
+RUN apk add unzip --no-cache --no-progress
+RUN wget -O clash.zip https://glados.rocks/tools/clash-linux.zip
+RUN unzip clash.zip
+RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
+RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
 # 设置代理 （执行不成功）
-# RUN ./clash/clash-linux-amd64-v1.10.0 -f ./clash/glados.yaml -d .
-# RUN export http_proxy="127.0.0.1:7890"
+RUN nohup  ./clash-linux-amd64-v1.10.0 -f glados.yaml -d . > /dev/null 2>&1 &
+RUN export http_proxy="127.0.0.1:7890"
 
 # 指定运行时的工作目录
 WORKDIR /app
