@@ -10,10 +10,12 @@ COPY src /app/src
 
 # 将pom.xml文件，拷贝到工作目录下
 COPY settings.xml pom.xml /app/
+COPY start.sh  /app/
 
 # 执行代码编译命令
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
+RUN chmod +x /app/start.sh
 
 # 选择运行时基础镜像
 FROM alpine:3.13
@@ -38,14 +40,16 @@ RUN unzip clash.zip
 RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
 RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
 # 设置代理 （执行不成功）
-RUN nohup  ./clash-linux-amd64-v1.10.0 -f glados.yaml -d . > /dev/null 2>&1 &
-RUN export http_proxy="127.0.0.1:7890"
+# RUN nohup  ./clash-linux-amd64-v1.10.0 -f glados.yaml -d . > /dev/null 2>&1 &
+# RUN export http_proxy="127.0.0.1:7890"
 
 # 指定运行时的工作目录
 WORKDIR /app
 
 # 将构建产物jar包拷贝到运行时目录中
 COPY --from=build /app/target/*.jar .
+COPY --from=build /app/start.sh .
+COPY --from=build /app/clash .
 
 # 暴露端口
 # 此处端口必须与「服务设置」-「流水线」以及「手动上传代码包」部署时填写的端口一致，否则会部署失败。
@@ -54,4 +58,4 @@ EXPOSE 80
 # 执行启动命令.
 # 写多行独立的CMD命令是错误写法！只有最后一行CMD命令会被执行，之前的都会被忽略，导致业务报错。
 # 请参考[Docker官方文档之CMD命令](https://docs.docker.com/engine/reference/builder/#cmd)
-CMD ["java", "-jar", "/app/springboot-wxcloudrun-1.0.jar"]
+CMD ["sh", "/app/start.sh"]
