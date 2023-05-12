@@ -40,8 +40,8 @@ RUN unzip clash.zip
 RUN wget -O ./clash/glados.yaml https://update.glados-config.com/clash/110828/093378c/82919/glados-terminal.yaml
 RUN chmod +x ./clash/clash-linux-amd64-v1.10.0
 # 设置代理 （执行不成功）
-RUN nohup  ./clash-linux-amd64-v1.10.0 -f glados.yaml -d . > /dev/null 2>&1 &
-RUN export http_proxy="127.0.0.1:7890"
+# RUN nohup  ./clash-linux-amd64-v1.10.0 -f glados.yaml -d . > /dev/null 2>&1 &
+# RUN export http_proxy="127.0.0.1:7890"
 
 # 指定运行时的工作目录
 WORKDIR /app
@@ -49,6 +49,7 @@ WORKDIR /app
 # 将构建产物jar包拷贝到运行时目录中
 COPY --from=build /app/target/*.jar .
 COPY --from=build /app/start.sh .
+COPY --from=build /app/clash .
 
 # 暴露端口
 # 此处端口必须与「服务设置」-「流水线」以及「手动上传代码包」部署时填写的端口一致，否则会部署失败。
