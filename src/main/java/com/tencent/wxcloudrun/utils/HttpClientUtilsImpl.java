@@ -139,6 +139,7 @@ public class HttpClientUtilsImpl implements HttpClientUtils {
 		connManager.setDefaultMaxPerRoute(32);
 		return HttpClientBuilder.create().setConnectionManager(connManager)
 				.setDefaultRequestConfig(requestConfig)
+				.setProxy(new HttpHost("127.0.0.1",7890))
 				.setDefaultCookieStore(cookieStore)
 				.build();
 	}
